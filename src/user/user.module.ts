@@ -4,15 +4,15 @@ import { UserService } from './user.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { RedisModule } from 'redis/redis.module';
 import { JwtModule } from '@nestjs/jwt';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({}),
-    RedisModule
+    RedisModule,
   ],
   controllers: [UserController],
   providers: [UserService],
