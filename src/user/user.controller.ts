@@ -6,7 +6,7 @@ import {
   LogOutDto,
   SignInDto,
   SignUpDto,
-} from '../globals/protos/auth';
+} from '../global/protos/auth';
 
 @Controller()
 export class UserController {

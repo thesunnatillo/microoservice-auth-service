@@ -5,12 +5,12 @@ import {
   LogOutDto,
   SignInDto,
   SignUpDto,
-} from '../globals/protos/auth';
-import { UserEntity } from './user.entity';
+} from '../global/protos/auth';
+import { UserEntity } from './entitys/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from '../globals/types/jwtpayload.type';
-import { Tokens } from '../globals/types/tokens.type';
+import { JwtPayload } from '../global/types/jwtpayload.type';
+import { Tokens } from '../global/types/tokens.type';
 import { Repository } from 'typeorm';
 import { RedisService } from '../redis/redis.service';
 import { ConfigService } from '@nestjs/config';
@@ -40,7 +40,11 @@ export class UserService {
         password: hash,
       };
       const savedUser = await this.userRepo.save(newUser);
-      const tokens = await this.getTokens(savedUser.id, savedUser.email);
+      const tokens = await this.getTokens(
+        savedUser.id,
+        savedUser.email,
+        user.role,
+      );
       await this.redisService.set(`at_${savedUser.id}`, tokens.access_token);
       await this.redisService.set(`rt_${savedUser.id}`, tokens.refresh_token);
       return {
@@ -70,7 +74,7 @@ export class UserService {
         return { message: 'Password mistake' };
       }
 
-      const tokens = await this.getTokens(user.id, user.email);
+      const tokens = await this.getTokens(user.id, user.email, user.role);
       await this.redisService.set(`at_${user.id}`, tokens.access_token);
       await this.redisService.set(`rt_${user.id}`, tokens.refresh_token);
       return {
@@ -117,10 +121,15 @@ export class UserService {
     return hash;
   }
 
-  async getTokens(userId: number, email: string): Promise<Tokens> {
+  async getTokens(
+    userId: number,
+    email: string,
+    role: string,
+  ): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
       email: email,
+      role: role,
     };
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
