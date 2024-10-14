@@ -1,14 +1,17 @@
 import { DataSource } from 'typeorm';
-import { UserEntity } from '../user/entitys/user.entity';
+import { UserEntity } from '@user/entitys/user.entity';
 import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
+
+const configService = new ConfigService();
 
 const dataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: '7582',
-  database: 'users_db',
+  host: configService.get('DATABASE_HOST'),
+  port: configService.get<number>('DATABASE_PORT'),
+  username: configService.get('DATABASE_USER'),
+  password: configService.get('DATABASE_PASSWORD'),
+  database: configService.get('DATABASE_NAME'),
   entities: [UserEntity],
   synchronize: false,
 });
@@ -18,8 +21,14 @@ async function seed() {
 
   const userRepo = dataSource.getRepository(UserEntity);
 
-  const hashPasswordAdmin = await bcrypt.hash('@dm1np@ssw0rD', 10);
-  const hashPasswordEmployee = await bcrypt.hash('Empl00y33p@ssw0rD', 10);
+  const hashPasswordAdmin = await bcrypt.hash(
+    configService.get<string>('SA_PWRD'),
+    10,
+  );
+  const hashPasswordEmployee = await bcrypt.hash(
+    configService.get<string>('E_PWRD'),
+    10,
+  );
 
   const superAdmin = userRepo.create({
     fullname: 'SuperAdmin User1',

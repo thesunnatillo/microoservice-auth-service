@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { UserController } from '@user/user.controller';
+import { UserService } from '@user/user.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './entitys/user.entity';
+import { UserEntity } from '@user/entitys/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { RedisModule } from '../redis/redis.module';
+import { RedisModule } from '@redis/redis.module';
 
 @Module({
   imports: [

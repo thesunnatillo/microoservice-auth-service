@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  GetMeDto,
-  LogOutDto,
-  SignInDto,
-  SignUpDto,
-} from '../global/protos/auth';
-import { UserEntity } from './entitys/user.entity';
+import { GetMeDto, LogOutDto, SignInDto, SignUpDto } from '@global/protos/auth';
+import { UserEntity } from '@user/entitys/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from '../global/types/jwtpayload.type';
-import { Tokens } from '../global/types/tokens.type';
+import { JwtPayload } from '@global/types/jwtpayload.type';
+import { Tokens } from '@global/types/tokens.type';
 import { Repository } from 'typeorm';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '@redis/redis.service';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
