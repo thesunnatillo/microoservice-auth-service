@@ -26,8 +26,8 @@ export class Seeder {
 
     const userRepo = dataSource.getRepository(UserEntity);
 
-    const hashPasswordAdmin = await bcrypt.hash('@dm1np@ssw0rD', 10);
-    const hashPasswordEmployee = await bcrypt.hash('Empl00y33p@ssw0rD', 10);
+    const hashPasswordAdmin = await bcrypt.hash(process.env.SA_PWRD, 10);
+    const hashPasswordEmployee = await bcrypt.hash(process.env.E_PWRD, 10);
 
     const superAdmin = userRepo.create({
       fullname: 'SuperAdmin User1',
