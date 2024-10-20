@@ -3,7 +3,9 @@ import { UserEntity } from '../user/entitys/user.entity';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
+import * as dotenv from 'dotenv';
 import * as process from 'node:process';
+dotenv.config();
 
 @Injectable()
 export class Seeder {
@@ -12,15 +14,14 @@ export class Seeder {
   async seed() {
     const dataSource = new DataSource({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '7582',
-      database: 'auth_db',
+      host: process.env.DATABASE_HOST,
+      port: Number(process.env.DATABASE_PORT),
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [UserEntity],
       synchronize: false,
     });
-    console.log(process.env.DATABASE_PASSWORD);
     await dataSource.initialize();
 
     const userRepo = dataSource.getRepository(UserEntity);

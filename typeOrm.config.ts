@@ -1,13 +1,16 @@
 import { DataSource } from "typeorm";
 import { UserEntity } from './src/user/entitys/user.entity';
+import * as dotenv from 'dotenv';
+import * as process from 'node:process';
+dotenv.config();
 
 export default new DataSource({
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: '7582',
-  database: 'auth_db',
+  host: process.env.DATABASE_HOST,
+  port: Number(process.env.DATABASE_PORT),
+  username: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
   migrations: ['migrations/**'],
   entities: [UserEntity],
 })
