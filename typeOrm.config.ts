@@ -7,7 +7,7 @@ export default new DataSource({
   port: 5432,
   username: 'postgres',
   password: '7582',
-  database: 'users_db',
+  database: 'auth_db',
   migrations: ['migrations/**'],
   entities: [UserEntity],
 })

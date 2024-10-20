@@ -1,7 +1,12 @@
 import { Controller } from '@nestjs/common';
 import { UserService } from '@user/user.service';
 import { GrpcMethod } from '@nestjs/microservices';
-import { GetMeDto, LogOutDto, SignInDto, SignUpDto } from '@global/protos/auth';
+import {
+  GetMeDto,
+  LogOutDto,
+  SignInDto,
+  SignUpDto,
+} from '../global_4_auth/protos/auth';
 
 @Controller()
 export class UserController {
